@@ -89,6 +89,10 @@ function randomQuestion(){
     }
 }
 
+
+let score = 0;
+let attempted = 0;
+
 function startQuiz(){
     if (Questions.length >=1) {
         let ques = document.querySelector(".question");
@@ -98,8 +102,12 @@ function startQuiz(){
             choice.textContent = Questions[index]["choice" + (i+1)];
             choice.style.backgroundColor = "";
             choice.onclick = function() {
+                attempted += 1;
+                document.querySelector("#attempted").textContent = attempted+"/3";
                 if (i+1 === Questions[index].answer) {
                     choice.style.backgroundColor = "green";
+                    score += 10;
+                    document.querySelector("#score").textContent = score;
                 } else {
                     choice.style.backgroundColor = "red";
                 }
@@ -116,6 +124,8 @@ function startQuiz(){
 function endQuiz() {
     document.querySelector(".question-box").style.display = "none";
     document.querySelector("#endScreen").style.display = "block";
+    document.querySelector("#scoreBoard").classList.add("shift_scoreboard");
+
     document.querySelector("#playAgainButton").onclick = function() {
         Questions = [
             {
@@ -143,8 +153,16 @@ function endQuiz() {
                 answer: 2,
             }, 
         ];
+
+        document.querySelector(".choices").classList.add("shift")
+        document.querySelector(".question").classList.add("shift")
+        score = 0;
+        document.querySelector("#score").textContent = score;
+        attempted = 0;
+        document.querySelector("#attempted").textContent = attempted;
         document.querySelector(".question-box").style.display = "block";
         document.querySelector("#endScreen").style.display = "none";
+        document.querySelector("#scoreBoard").classList.remove("shift_scoreboard");
         randomQuestion();
         startQuiz();
     };
