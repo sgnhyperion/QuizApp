@@ -88,20 +88,26 @@ function randomQuestion(){
         endQuiz();
     }
 }
-
-
+let selected = false;
 let score = 0;
 let attempted = 0;
 
+
 function startQuiz(){
+    selected = false;
     if (Questions.length >=1) {
         let ques = document.querySelector(".question");
         let choices = document.querySelectorAll(".choice");
         ques.textContent = Questions[index].question;
+
         choices.forEach((choice, i) => {
             choice.textContent = Questions[index]["choice" + (i+1)];
             choice.style.backgroundColor = "";
+
             choice.onclick = function() {
+                if (selected) {
+                    return;
+                }
                 attempted += 1;
                 document.querySelector("#attempted").textContent = attempted+"/3";
                 if (i+1 === Questions[index].answer) {
@@ -111,11 +117,13 @@ function startQuiz(){
                 } else {
                     choice.style.backgroundColor = "red";
                 }
+                selected = true;
                 Questions.splice(index, 1);
                 setTimeout(randomQuestion, 1000); 
                 setTimeout(startQuiz, 1000);
             };
         });
+
     } else {
         endQuiz();
     }
